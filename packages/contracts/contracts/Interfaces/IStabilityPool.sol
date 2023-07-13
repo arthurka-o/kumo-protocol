@@ -72,7 +72,7 @@ interface IStabilityPool is IDeposit {
     event UserDepositChanged(address indexed _depositor, uint256 _newDeposit);
 
     event AssetGainWithdrawn(address indexed _depositor, uint256 _Asset, uint256 _kusdLoss);
-    event SystemSnapshotUpdated(uint256 _P, uint256 _G);
+    event KUSDGainWithdrawn(address indexed _depositor, uint256 _value);
 
     event KUMOPaidToDepositor(address indexed _depositor, uint256 _KUMO);
     event AssetSent(address _to, uint256 _amount);
@@ -176,6 +176,8 @@ interface IStabilityPool is IDeposit {
      */
     function getDepositorAssetGain(address _depositor) external view returns (uint256);
 
+    function getDepositorKUSDGain(address _depositor) external view returns (uint256);
+
     /*
      * Return the front end's compounded stake.
      *
@@ -190,4 +192,14 @@ interface IStabilityPool is IDeposit {
      * Only callable by Active Pool, it just accounts for ETH received
      * receive() external payable;
      */
+
+    // --- Events and functions from the Staking contract
+
+    event F_AssetUpdated(address indexed _asset, uint256 _F_ASSET);
+    event F_KUSDUpdated(uint256 _F_KUSD);
+    event StakerSnapshotsUpdated(address _staker, uint256 _F_Asset, uint256 _F_KUSD);
+
+    function increaseF_Asset(uint256 _AssetFee) external;
+
+    function increaseF_KUSD(uint256 _KUMOFee) external;
 }
