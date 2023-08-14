@@ -128,23 +128,6 @@ import "./Dependencies/SafetyTransfer.sol";
  *
  * Please see the implementation spec in the proof document, which closely follows on from the compounded deposit / ETH gain derivations:
  * https://github.com/liquity/liquity/blob/master/papers/Scalable_Reward_Distribution_with_Compounding_Stakes.pdf
- *
- *
- * --- KUMO ISSUANCE TO STABILITY POOL DEPOSITORS ---
- *
- * An KUMO issuance event occurs at every deposit operation, and every liquidation.
- *
- * Each deposit is tagged with the address of the front end through which it was made.
- *
- * All deposits earn a share of the issued KUMO in proportion to the deposit as a share of total deposits. The KUMO earned
- * by a given deposit, is split between the depositor and the front end through which the deposit was made, based on the front end's kickbackRate.
- *
- * Please see the system Readme for an overview:
- * https://github.com/liquity/dev/blob/main/README.md#kumo-issuance-to-stability-providers
- *
- * We use the same mathematical product-sum approach to track KUMO gains for depositors, where 'G' is the sum corresponding to KUMO gains.
- * The product P (and snapshot P_t) is re-used, as the ratio P/P_t tracks a deposit's depletion due to liquidations.
- *
  */
 contract StabilityPool is KumoBase, CheckContract, IStabilityPool {
     using KumoSafeMath128 for uint128;
@@ -413,7 +396,7 @@ contract StabilityPool is KumoBase, CheckContract, IStabilityPool {
 
     /*
      * Cancels out the specified debt against the KUSD contained in the Stability Pool (as far as possible)
-     * and transfers the Trove's ETH collateral from ActivePool to StabilityPool.
+     * and transfers the Trove's Asset collateral from ActivePool to StabilityPool.
      * Only called by liquidation functions in the TroveManager.
      */
     function offset(uint256 _debtToOffset, uint256 _collToAdd) external override {
@@ -423,13 +406,12 @@ contract StabilityPool is KumoBase, CheckContract, IStabilityPool {
             return;
         }
 
-        (uint256 ETHGainPerUnitStaked, uint256 KUSDLossPerUnitStaked) = _computeRewardsPerUnitStaked(
-            _collToAdd,
-            _debtToOffset,
-            totalKUSD
-        );
+        (
+            uint256 AssetGainPerUnitStaked,
+            uint256 KUSDLossPerUnitStaked
+        ) = _computeRewardsPerUnitStaked(_collToAdd, _debtToOffset, totalKUSD);
 
-        _updateRewardSumAndProduct(ETHGainPerUnitStaked, KUSDLossPerUnitStaked); // updates S and P
+        _updateRewardSumAndProduct(AssetGainPerUnitStaked, KUSDLossPerUnitStaked); // updates S and P
 
         _moveOffsetCollAndDebt(_collToAdd, _debtToOffset);
     }
@@ -440,9 +422,9 @@ contract StabilityPool is KumoBase, CheckContract, IStabilityPool {
         uint256 _collToAdd,
         uint256 _debtToOffset,
         uint256 _totalKUSDDeposits
-    ) internal returns (uint256 ETHGainPerUnitStaked, uint256 KUSDLossPerUnitStaked) {
+    ) internal returns (uint256 AssetGainPerUnitStaked, uint256 KUSDLossPerUnitStaked) {
         /*
-         * Compute the KUSD and ETH rewards. Uses a "feedback" error correction, to keep
+         * Compute the KUSD and Asset rewards. Uses a "feedback" error correction, to keep
          * the cumulative error in the P and S state variables low:
          *
          * 1) Form numerators which compensate for the floor division errors that occurred the last time this
@@ -472,15 +454,15 @@ contract StabilityPool is KumoBase, CheckContract, IStabilityPool {
             );
         }
 
-        ETHGainPerUnitStaked = ETHNumerator.div(_totalKUSDDeposits);
-        lastETHError_Offset = ETHNumerator.sub(ETHGainPerUnitStaked.mul(_totalKUSDDeposits));
+        AssetGainPerUnitStaked = ETHNumerator.div(_totalKUSDDeposits);
+        lastETHError_Offset = ETHNumerator.sub(AssetGainPerUnitStaked.mul(_totalKUSDDeposits));
 
-        return (ETHGainPerUnitStaked, KUSDLossPerUnitStaked);
+        return (AssetGainPerUnitStaked, KUSDLossPerUnitStaked);
     }
 
     // Update the Stability Pool reward sum S and product P
     function _updateRewardSumAndProduct(
-        uint256 _ETHGainPerUnitStaked,
+        uint256 _AssetGainPerUnitStaked,
         uint256 _KUSDLossPerUnitStaked
     ) internal {
         uint256 currentP = P;
@@ -504,7 +486,7 @@ contract StabilityPool is KumoBase, CheckContract, IStabilityPool {
          *
          * Since S corresponds to ETH gain, and P to deposit loss, we update S first.
          */
-        uint256 marginalETHGain = _ETHGainPerUnitStaked.mul(currentP);
+        uint256 marginalETHGain = _AssetGainPerUnitStaked.mul(currentP);
         uint256 newS = currentS.add(marginalETHGain);
         epochToScaleToSum[currentEpochCached][currentScaleCached] = newS;
         emit S_Updated(newS, currentEpochCached, currentScaleCached);
@@ -736,16 +718,7 @@ contract StabilityPool is KumoBase, CheckContract, IStabilityPool {
         emit StakerSnapshotsUpdated(_depositor, F_ASSET, F_KUSD);
     }
 
-    // --- Sender functions for KUMO deposit, ETH gains and KUMOA gains ---
-
-    // Transfer the KUMO tokens from the user to the Stability Pool's address, and update its recorded KUMO
-    function _sendKUMOtoStabilityPool(address _address, uint256 _amount) internal {
-        kusdToken.sendToPool(_address, address(this), _amount);
-        uint256 newtotalKUSDDeposits = totalKUSDDeposits.add(_amount);
-        totalKUSDDeposits = newtotalKUSDDeposits;
-        emit StabilityPoolKUSDBalanceUpdated(newtotalKUSDDeposits);
-    }
-
+    // --- Sender functions for KUSD deposit and Asset gains ---
     function _sendAssetGainToDepositor(uint256 _amount) internal {
         if (_amount == 0) {
             return;
@@ -758,8 +731,8 @@ contract StabilityPool is KumoBase, CheckContract, IStabilityPool {
         emit AssetSent(msg.sender, _amount);
     }
 
-    // Send KUMO to user and decrease KUMO in Pool
-    function _sendKUMOToDepositor(address _depositor, uint256 KUSDWithdrawal) internal {
+    // Send KUSD to user and decrease KUSD in Pool
+    function _sendKUSDGainToDepositor(address _depositor, uint256 KUSDWithdrawal) internal {
         if (KUSDWithdrawal == 0) {
             return;
         }
