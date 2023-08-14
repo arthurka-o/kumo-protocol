@@ -74,7 +74,6 @@ interface IStabilityPool is IDeposit {
     event AssetGainWithdrawn(address indexed _depositor, uint256 _Asset, uint256 _kusdLoss);
     event KUSDGainWithdrawn(address indexed _depositor, uint256 _value);
 
-    event KUMOPaidToDepositor(address indexed _depositor, uint256 _KUMO);
     event AssetSent(address _to, uint256 _amount);
 
     // --- Functions ---
@@ -157,14 +156,6 @@ interface IStabilityPool is IDeposit {
      * Returns KUSD held in the pool. Changes when users deposit/withdraw, and when Trove debt is offset.
      */
     function getTotalKUSDDeposits() external view returns (uint256);
-
-    /*
-     * Calculate the KUMO gain earned by a deposit since its last snapshots were taken.
-     * If not tagged with a front end, the depositor gets a 100% cut of what their deposit earned.
-     * Otherwise, their cut of the deposit's earnings is equal to the kickbackRate, set by the front end through
-     * which they made their deposit.
-     */
-    function getDepositorKUMOGain(address _depositor) external view returns (uint256);
 
     /*
      * Return the user's compounded deposit.
