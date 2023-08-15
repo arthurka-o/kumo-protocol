@@ -44,25 +44,27 @@ contract LPTokenWrapper {
     //         _balances[msg.sender] = _balances[msg.sender].sub(amount);
     //         uniToken.safeTransfer(msg.sender, amount);
     //     }
-    // }
-    // /*
-    //  * On deployment a new Uniswap pool will be created for the pair KUSD/ETH and its token will be set here.
-    //  * Essentially the way it works is:
-    //  * - Liquidity providers add funds to the Uniswap pool, and get UNIv2 LP tokens in exchange
-    //  * - Liquidity providers stake those UNIv2 LP tokens into Unipool rewards contract
-    //  * - Liquidity providers accrue rewards, proportional to the amount of staked tokens and staking time
-    //  * - Liquidity providers can claim their rewards when they want
-    //  * - Liquidity providers can unstake UNIv2 LP tokens to exit the program (i.e., stop earning rewards) when they want
-    //  * Funds for rewards will only be added once, on deployment of KUMO token,
-    //  * which will happen after this contract is deployed and before this `setParams` in this contract is called.
-    //  * If at some point the total amount of staked tokens is zero, the clock will be “stopped”,
-    //  * so the period will be extended by the time during which the staking pool is empty,
-    //  * in order to avoid getting KUMO tokens locked.
-    //  * That also means that the start time for the program will be the event that occurs first:
-    //  * either KUMO token contract is deployed, and therefore KUMO tokens are minted to Unipool contract,
-    //  * or first liquidity provider stakes UNIv2 LP tokens into it.
-    //  */
-    // contract Unipool is LPTokenWrapper, Ownable, CheckContract, IUnipool {
+}
+
+// /*
+//  * On deployment a new Uniswap pool will be created for the pair KUSD/ETH and its token will be set here.
+//  * Essentially the way it works is:
+//  * - Liquidity providers add funds to the Uniswap pool, and get UNIv2 LP tokens in exchange
+//  * - Liquidity providers stake those UNIv2 LP tokens into Unipool rewards contract
+//  * - Liquidity providers accrue rewards, proportional to the amount of staked tokens and staking time
+//  * - Liquidity providers can claim their rewards when they want
+//  * - Liquidity providers can unstake UNIv2 LP tokens to exit the program (i.e., stop earning rewards) when they want
+//  * Funds for rewards will only be added once, on deployment of KUMO token,
+//  * which will happen after this contract is deployed and before this `setParams` in this contract is called.
+//  * If at some point the total amount of staked tokens is zero, the clock will be “stopped”,
+//  * so the period will be extended by the time during which the staking pool is empty,
+//  * in order to avoid getting KUMO tokens locked.
+//  * That also means that the start time for the program will be the event that occurs first:
+//  * either KUMO token contract is deployed, and therefore KUMO tokens are minted to Unipool contract,
+//  * or first liquidity provider stakes UNIv2 LP tokens into it.
+//  */
+contract Unipool {
+    // is LPTokenWrapper, Ownable, CheckContract, IUnipool {
     //     using SafeMath for uint256;
     //     string public constant NAME = "Unipool";
     //     // bool public isInitialized;
@@ -195,5 +197,4 @@ contract LPTokenWrapper {
     //         assert(account != address(0));
     //         rewards[account] = earned(account);
     //         userRewardPerTokenPaid[account] = rewardPerTokenStored;
-    //     }
 }
