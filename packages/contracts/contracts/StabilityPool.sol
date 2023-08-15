@@ -16,6 +16,7 @@ import "./Dependencies/SafeMath.sol";
 import "./Dependencies/KumoSafeMath128.sol";
 import "./Dependencies/CheckContract.sol";
 import "./Dependencies/SafetyTransfer.sol";
+import "hardhat/console.sol";
 
 /*
  * The Stability Pool holds KUSD tokens deposited by Stability Pool depositors.
