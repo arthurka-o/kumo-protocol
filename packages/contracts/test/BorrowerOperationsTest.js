@@ -101,9 +101,7 @@ contract("BorrowerOperations", async accounts => {
       await kumoParams.setAsDefault(assetAddress1);
       await deploymentHelper.addNewAssetToSystem(contracts, KUMOContracts, assetAddress1);
 
-      await deploymentHelper.connectKUMOContracts(KUMOContracts);
       await deploymentHelper.connectCoreContracts(contracts, KUMOContracts);
-      await deploymentHelper.connectKUMOContractsToCore(KUMOContracts, contracts);
 
       if (withProxy) {
         const users = [alice, bob, carol, dennis, whale, A, B, C, D, E];

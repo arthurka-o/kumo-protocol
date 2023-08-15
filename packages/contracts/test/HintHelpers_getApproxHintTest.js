@@ -107,9 +107,6 @@ contract("HintHelpers", async accounts => {
     priceFeed = contracts.priceFeedTestnet;
 
     await deploymentHelper.connectCoreContracts(contracts, KUMOContracts);
-    await deploymentHelper.connectKUMOContracts(KUMOContracts);
-    await deploymentHelper.connectKUMOContractsToCore(KUMOContracts, contracts);
-
     // Mint token to each acccount
     await deploymentHelper.mintMockAssets(erc20Asset1, accounts, 20);
 

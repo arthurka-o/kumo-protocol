@@ -96,9 +96,7 @@ contract("Gas compensation tests", async accounts => {
 
     await troveManager.setAddresses(kumoParameters.address);
 
-    await deploymentHelper.connectKUMOContracts(KUMOContracts);
     await deploymentHelper.connectCoreContracts(contracts, KUMOContracts);
-    await deploymentHelper.connectKUMOContractsToCore(KUMOContracts, contracts);
 
     // Mint token to each acccount
     await deploymentHelper.mintMockAssets(erc20Asset1, accounts, 20);

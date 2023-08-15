@@ -94,9 +94,7 @@ contract("StabilityPool - KUMO Rewards", async accounts => {
       kumoToken = KUMOContracts.kumoToken;
       communityIssuanceTester = KUMOContracts.communityIssuance;
 
-      await deploymentHelper.connectKUMOContracts(KUMOContracts);
       await deploymentHelper.connectCoreContracts(contracts, KUMOContracts);
-      await deploymentHelper.connectKUMOContractsToCore(KUMOContracts, contracts);
 
       // Check community issuance starts with 32 million KUMO
       communityKUMOSupply = toBN(await kumoToken.balanceOf(communityIssuanceTester.address));

@@ -1,4 +1,3 @@
-const { connectKUMOContractsToCore } = require("../utils/deploymentHelpers.js");
 const deploymentHelper = require("../utils/deploymentHelpers.js");
 const testHelpers = require("../utils/testHelpers.js");
 
@@ -67,9 +66,7 @@ contract(
       erc20Asset1 = await deploymentHelper.deployERC20Asset("Carbon Token X", "CTX");
       assetAddress1 = erc20Asset1.address;
 
-      await deploymentHelper.connectKUMOContracts(KUMOContracts);
       await deploymentHelper.connectCoreContracts(coreContracts, KUMOContracts);
-      await deploymentHelper.connectKUMOContractsToCore(KUMOContracts, coreContracts);
 
       await deploymentHelper.addNewAssetToSystem(coreContracts, KUMOContracts, assetAddress1);
 

@@ -101,9 +101,7 @@ contract("SortedTroves", async accounts => {
       borrowerOperations = contracts.borrowerOperations;
       kusdToken = contracts.kusdToken;
 
-      await deploymentHelper.connectKUMOContracts(KUMOContracts);
       await deploymentHelper.connectCoreContracts(contracts, KUMOContracts);
-      await deploymentHelper.connectKUMOContractsToCore(KUMOContracts, contracts);
 
       // Add asset to the system
       await deploymentHelper.addNewAssetToSystem(contracts, KUMOContracts, assetAddress1);

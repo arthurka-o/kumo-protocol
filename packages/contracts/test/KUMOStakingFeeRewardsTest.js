@@ -56,9 +56,9 @@
 //       multisig
 //     );
 
-//     await deploymentHelper.connectKUMOContracts(KUMOContracts);
+//     ;
 //     await deploymentHelper.connectCoreContracts(contracts, KUMOContracts);
-//     await deploymentHelper.connectKUMOContractsToCore(KUMOContracts, contracts);
+//
 
 //     erc20Asset1 = await deploymentHelper.deployERC20Asset("Carbon Token X", "CTX");
 //     assetAddress1 = erc20Asset1.address;

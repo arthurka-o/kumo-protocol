@@ -84,13 +84,10 @@ contract("StabilityPool - Withdrawal of stability deposit - Reward calculations"
       defaultPool = contracts.defaultPool;
       borrowerOperations = contracts.borrowerOperations;
 
-      await deploymentHelper.connectKUMOContracts(KUMOContracts);
-
       // Mint token to each acccount
       await deploymentHelper.mintMockAssets(erc20Asset1, accounts, 50);
 
       await deploymentHelper.connectCoreContracts(contracts, KUMOContracts);
-      await deploymentHelper.connectKUMOContractsToCore(KUMOContracts, contracts);
 
       // Set KUSD mint cap to 1 trillion
       await contracts.kumoParameters.setKUSDMintCap(assetAddress1, dec(1, 30));

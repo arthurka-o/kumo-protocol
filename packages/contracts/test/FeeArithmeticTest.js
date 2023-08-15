@@ -210,9 +210,7 @@ contract("Fee arithmetic tests", async accounts => {
     );
     erc20Asset1 = await deploymentHelper.deployERC20Asset("Carbon Token X", "CTX");
 
-    await deploymentHelper.connectKUMOContracts(KUMOContracts);
     await deploymentHelper.connectCoreContracts(contracts, KUMOContracts);
-    await deploymentHelper.connectKUMOContractsToCore(KUMOContracts, contracts);
 
     troveManagerTester = contracts.troveManager;
   });

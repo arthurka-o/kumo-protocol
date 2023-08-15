@@ -81,9 +81,7 @@ contract("TroveManager - stakeDecline", async accounts => {
     erc20Asset2 = await deploymentHelper.deployERC20Asset("Carbon Token Y", "CTY");
     assetAddress2 = erc20Asset2.address;
 
-    await deploymentHelper.connectKUMOContracts(KUMOContracts);
     await deploymentHelper.connectCoreContracts(contracts, KUMOContracts);
-    await deploymentHelper.connectKUMOContractsToCore(KUMOContracts, contracts);
 
     // Add assets to the system
     await deploymentHelper.addNewAssetToSystem(contracts, KUMOContracts, assetAddress1);

@@ -66,9 +66,7 @@ contract("KUMO community issuance arithmetic tests", async accounts => {
     kumoToken = KUMOContracts.kumoToken;
     communityIssuanceTester = KUMOContracts.communityIssuance;
 
-    await deploymentHelper.connectKUMOContracts(KUMOContracts);
     await deploymentHelper.connectCoreContracts(contracts, KUMOContracts);
-    await deploymentHelper.connectKUMOContractsToCore(KUMOContracts, contracts);
   });
 
   // Accuracy tests

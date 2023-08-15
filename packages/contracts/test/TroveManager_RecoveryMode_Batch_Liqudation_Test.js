@@ -67,9 +67,7 @@ contract("TroveManager - in Recovery Mode - back to normal mode in 1 tx", async 
     assetAddress2 = erc20Asset2.address;
     stabilityPoolFactory = contracts.stabilityPoolFactory;
 
-    await deploymentHelper.connectKUMOContracts(KUMOContracts);
     await deploymentHelper.connectCoreContracts(contracts, KUMOContracts);
-    await deploymentHelper.connectKUMOContractsToCore(KUMOContracts, contracts);
 
     // Add assets to the system
     await deploymentHelper.addNewAssetToSystem(contracts, KUMOContracts, assetAddress1);

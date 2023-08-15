@@ -72,9 +72,9 @@
 //     KUMOContracts = await deploymentHelper.deployKUMOTesterContractsHardhat(bountyAddress, lpRewardsAddress, multisig)
 //     hardhatTester = await deploymentHelper.deployTesterContractsHardhat()
 
-//     await deploymentHelper.connectKUMOContracts(KUMOContracts)
+//
 //     await deploymentHelper.connectCoreContracts(contracts, KUMOContracts)
-//     await deploymentHelper.connectKUMOContractsToCore(KUMOContracts, contracts)
+//
 
 //     troveManagerOriginal = contracts.troveManager
 //     kumoTokenOriginal = KUMOContracts.kumoToken

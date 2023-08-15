@@ -475,27 +475,27 @@ class DeploymentHelper {
     );
   }
 
-  static async connectKUMOContracts(KUMOContracts) {
-    // Set KUMOToken address in LCF
-    await KUMOContracts.lockupContractFactory.setKUMOTokenAddress(KUMOContracts.kumoToken.address);
-  }
+  // static async connectKUMOContracts(KUMOContracts) {
+  //   // Set KUMOToken address in LCF
+  //   await KUMOContracts.lockupContractFactory.setKUMOTokenAddress(KUMOContracts.kumoToken.address);
+  // }
 
-  static async connectKUMOContractsToCore(KUMOContracts, coreContracts) {
-    // const treasurySig = await KUMOContracts.kumoToken.treasury();
-    await KUMOContracts.kumoStaking.setAddresses(
-      KUMOContracts.kumoToken.address,
-      coreContracts.kusdToken.address,
-      coreContracts.troveManager.address,
-      coreContracts.borrowerOperations.address,
-      coreContracts.activePool.address
-      // treasurySig
-    );
+  // static async connectKUMOContractsToCore(KUMOContracts, coreContracts) {
+  //   // const treasurySig = await KUMOContracts.kumoToken.treasury();
+  //   await KUMOContracts.kumoStaking.setAddresses(
+  //     KUMOContracts.kumoToken.address,
+  //     coreContracts.kusdToken.address,
+  //     coreContracts.troveManager.address,
+  //     coreContracts.borrowerOperations.address,
+  //     coreContracts.activePool.address
+  //     // treasurySig
+  //   );
 
-    await KUMOContracts.communityIssuance.setAddresses(
-      KUMOContracts.kumoToken.address,
-      coreContracts.stabilityPoolFactory.address
-    );
-  }
+  //   await KUMOContracts.communityIssuance.setAddresses(
+  //     KUMOContracts.kumoToken.address,
+  //     coreContracts.stabilityPoolFactory.address
+  //   );
+  // }
 
   static async connectUnipool(uniPool, KUMOContracts, uniswapPairAddr, duration) {
     await uniPool.setParams(KUMOContracts.kumoToken.address, uniswapPairAddr, duration);

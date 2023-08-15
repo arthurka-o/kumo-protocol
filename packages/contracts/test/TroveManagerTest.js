@@ -113,9 +113,6 @@ contract("TroveManager", async accounts => {
     assetAddress2 = erc20Asset2.address;
 
     await deploymentHelper.connectCoreContracts(contracts, KUMOContracts);
-    await deploymentHelper.connectKUMOContracts(KUMOContracts);
-    await deploymentHelper.connectKUMOContractsToCore(KUMOContracts, contracts);
-
     // Add assets to the system
     await deploymentHelper.addNewAssetToSystem(contracts, KUMOContracts, assetAddress1);
     await deploymentHelper.addNewAssetToSystem(contracts, KUMOContracts, assetAddress2);
