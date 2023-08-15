@@ -3,15 +3,16 @@ pragma solidity 0.8.11;
 
 import "./Dependencies/Ownable.sol";
 import "./Interfaces/IStabilityPool.sol";
+import "./Interfaces/IStabilityPoolFactory.sol";
 
-contract StabilityPoolFactory is Ownable {
+contract StabilityPoolFactory is Ownable, IStabilityPoolFactory {
     mapping(address => address) stabilityPools;
     mapping(address => bool) registeredStabiliyPools;
 
-    function createNewStabilityPool(address _asset, address _stabilityPoolAddress)
-        external
-        onlyOwner
-    {
+    function createNewStabilityPool(
+        address _asset,
+        address _stabilityPoolAddress
+    ) external onlyOwner {
         stabilityPools[_asset] = _stabilityPoolAddress;
         registeredStabiliyPools[_stabilityPoolAddress] = true;
     }
